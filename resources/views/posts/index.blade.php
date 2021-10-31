@@ -22,7 +22,7 @@
                         <form method="POST" action="{{route('posts.destroy', ['post'=> $post->id])}}">
                             @method('DELETE')
                             @csrf
-                            <a class="btn btn-primary" href="">view</a>
+                            <a class="btn btn-primary" href="{{route('posts.show', ['post'=>$post->id])}}">view</a>
                             <a class="btn btn-warning" href="{{route('posts.edit', ['post'=>$post->id])}}">edit</a>
                             <input class="btn btn-danger" type="submit" value="delete">
                         </form>

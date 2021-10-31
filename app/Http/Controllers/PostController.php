@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Support\Facades\Schema;
 
 class PostController extends Controller
 {
@@ -60,8 +61,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //$post = Post::findOrFail($id);
-        return response()->view('posts.show', compact('post'));
+        $columns = Schema::getColumnListing('posts');
+
+        return response()->view('posts.show', compact('post', 'columns'));
     }
 
     /**
