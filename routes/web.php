@@ -3,6 +3,8 @@
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use App\Models\Post;
+use App\Models\User;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,4 +36,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/user/profile', function() {
         return view('profile');
     })->name('profile');
+    Route::get('/user/posts', function() {
+        $posts = Post::where('user_id', auth()->user()->id)->paginate(10);
+        $likes_total = Post::userPostsTotalLikes(auth()->user()->id);
+        $comments_total = Post::userPostsTotalComments(auth()->user()->id);
+        return view('user-posts', compact('posts', 'likes_total', 'comments_total'));
+    })->name('user-posts');
 });
