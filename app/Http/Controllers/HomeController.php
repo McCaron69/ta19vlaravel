@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -17,7 +18,7 @@ class HomeController extends Controller
      */
     public function posts()
     {
-        $posts = Post::paginate(16);
+        $posts = Post::latest()->paginate(16);
 
         return response()->view('posts', compact('posts'));
     }
@@ -34,4 +35,8 @@ class HomeController extends Controller
         return response()->view('post', compact('post'));
     }
 
+    public function tag(Tag $tag){
+        $posts = $tag->posts()->paginate();
+        return response()->view('posts', compact('posts'));
+    }
 }

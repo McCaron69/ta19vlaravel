@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index']);
 Route::get('/posts', [HomeController::class, 'posts']);
 Route::get('/posts/{post}', [HomeController::class, 'post'])->whereNumber('post')->name('post');
-
+Route::get('/tag/{tag}', [HomeController::class, 'tag']);
 //Route::get('/admin/posts', [PostController::class, 'index']);
 //Route::get('/admin/posts/create', [PostController::class, 'create']);
 //Route::post('/admin/posts', [PostController::class, 'store']);
@@ -29,6 +31,9 @@ Route::get('/posts/{post}', [HomeController::class, 'post'])->whereNumber('post'
 
 Route::middleware(['auth'])->group(function() {
     Route::resource('/admin/posts', PostController::class);
+    Route::post('/post/{post}', [CommentController::class, 'store']);
+    Route::get('/post/{post}/like', [LikeController::class, 'postLike'])->name('post.like');
+    Route::get('/post/comment/{comment}/like', [LikeController::class, 'commentLike'])->name('comment.like');
     Route::get('/user/profile', function() {
         return view('profile');
     })->name('profile');

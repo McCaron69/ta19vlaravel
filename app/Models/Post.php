@@ -12,18 +12,40 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['body', 'title', 'image'];
+    protected $fillable = ['body', 'title'];
 //    public function getTitleAttribute($value){
 //        return ucfirst($value) . '.';
 //    }
+
+    protected $with = ['user'];
+
+    protected $appends = ['snippet'];
 
     public function user(){
         return $this->belongsTo(User::class);
     }
 
-    public function setImageAttribute(UploadedFile $image){
-       $path = $image->store('public');
-       $this->image_path = Storage::url($path);
+    public function comments(){
+        return $this->hasMany(Comment::class)->latest();
+    }
+
+    public function images(){
+        return $this->hasMany(Image::class);
+    }
+
+    public function likes(){
+        return $this->hasMany(Like::class);
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tag::class);
+    }
+
+    public function getAuthHasLikedAttribute(){
+        if(auth()->check()) {
+            return $this->likes()->where('user_id', auth()->user()->id)->exists();
+        }
+        return false;
     }
 
     public function getSnippetAttribute(){
@@ -36,9 +58,8 @@ class Post extends Model
 
     protected static function booted()
     {
-        static::deleting(function ($post) {
-            dd($post->image_path);
-            //File::delete()
+        static::deleted(function ($post) {
+            File::delete(public_path($post->image_path));
         });
     }
 }

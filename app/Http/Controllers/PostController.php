@@ -4,17 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Middleware\UserOwnsPost;
 use App\Http\Requests\CreatePostRequest;
+use App\Models\Image;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Illuminate\Support\Facades\Schema;
 
 class PostController extends Controller
 {
     public function __construct() {
-        $this->middleware(UserOwnsPost::class)->except(['index', 'create', 'store']);
+        $this->middleware(UserOwnsPost::class)->except(['index', 'create', 'store', 'posts']);
     }
+
+    public function posts(){
+        return Post::with(['images'])->inRandomOrder()->take(20)->get();
+    }
+
+
 
     /**
      * Display a listing of the resource.
@@ -50,6 +58,12 @@ class PostController extends Controller
 //        $post->title = $request->input('title');
 //        $post->body = $request->input('body');
         $post->save();
+        foreach ($request->validated()['image'] as $image) {
+            $path = $image->store('public');
+            $image = new Image();
+            $image->path = Storage::url($path);
+            $post->images()->save($image);
+        }
         return response()->redirectTo('/admin/posts');
     }
 
