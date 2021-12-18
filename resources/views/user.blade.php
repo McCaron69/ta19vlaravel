@@ -1,18 +1,21 @@
 @extends('layout')
 @section('title', 'User posts')
 @section('content')
-    <div class="container p-5">
-        <div class="row">
-            <div class="col">
-                <div class="p-3 border bg-light">Total posts: {{ $posts->count() }}</div>
-            </div>
-            <div class="col">
-                <div class="p-3 border bg-light">Total likes: {{ $likes_total }}</div>
-            </div>
-            <div class="col">
-                <div class="p-3 border bg-light">Total comments: {{ $comments_total }}</div>
-            </div>
-        </div>
+    <h1 class="pt-5">{{ $user->name }} (ID: {{ $user->id }}) statistics</h1>
+    <div class="pt-4 pb-4">
+        <table class="table table-bordered">
+            <tbody>
+                <tr>
+                    <td>Likes given: {{ $likes_given }}</td>
+                    <td>Comments written: {{ $comments_written }}</td>
+                    <td>Posts written: {{ $posts_written }}</td>
+                </tr>
+                <tr>
+                    <td colspan=2>Likes on posts gained: {{ $likes_gained }}</td>
+                    <td>Comments on posts gained: {{ $comments_gained }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
     @if ($posts->empty())
     <table class="table">

@@ -21,6 +21,8 @@ Route::get('/', [HomeController::class, 'index']);
 Route::get('/posts', [HomeController::class, 'posts']);
 Route::get('/posts/{post}', [HomeController::class, 'post'])->whereNumber('post')->name('post');
 
+Route::get('/users/{user}', [HomeController::class, 'user'])->whereNumber('user')->name('user');
+
 //Route::get('/admin/posts', [PostController::class, 'index']);
 //Route::get('/admin/posts/create', [PostController::class, 'create']);
 //Route::post('/admin/posts', [PostController::class, 'store']);
@@ -36,10 +38,4 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/user/profile', function() {
         return view('profile');
     })->name('profile');
-    Route::get('/user/posts', function() {
-        $posts = Post::where('user_id', auth()->user()->id)->paginate(10);
-        $likes_total = Post::userPostsTotalLikes(auth()->user()->id);
-        $comments_total = Post::userPostsTotalComments(auth()->user()->id);
-        return view('user-posts', compact('posts', 'likes_total', 'comments_total'));
-    })->name('user-posts');
 });

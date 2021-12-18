@@ -11,7 +11,7 @@
         <div class="card-body">
             <h5 class="card-title">{{ $post->title }}</h5>
             <p class="card-text">{!! $post->displayBody !!}</p>
-            <p class="card-text text-muted">{{ $post->user->name }}</p>
+            <p class="card-text text-muted"><a href="/users/{{ $post->user->id }}">{{ $post->user->name }}</a></p>
             <p class="card-text text-muted">{{ $post->created_at->diffForHumans() }}</p>
         </div>
     </div>
@@ -29,7 +29,7 @@
         <div class="card mt-3">
             <div class="card-body">
                 <p class="card-text">{{ $comment->body }}</p>
-                <p class="card-text text-muted">{{ $comment->user->name }}</p>
+                <p class="card-text text-muted"><a href="/users/{{ $comment->user->id }}">{{ $comment->user->name }}</a></p>
                 <p class="card-text text-muted">{{ $comment->created_at->diffForHumans() }}</p>
             </div>
         </div>

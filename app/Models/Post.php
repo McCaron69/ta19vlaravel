@@ -25,36 +25,12 @@ class Post extends Model
         return $this->hasMany(Comment::class)->latest();
     }
 
-    public static function commentsInCollection($collection) {
-        $commentsCount = 0;
-        foreach ($collection as $item) {
-            $commentsCount += $item->comments()->count();
-        }
-        return $commentsCount;
-    }
-
-    public static function userPostsTotalComments($user_id) {
-        return Post::commentsInCollection(Post::where('user_id', $user_id)->get());
-    }
-
     public function images(){
         return $this->hasMany(Image::class);
     }
 
     public function likes(){
         return $this->hasMany(Like::class);
-    }
-
-    public static function likesInCollection($collection) {
-        $likesCount = 0;
-        foreach ($collection as $item) {
-            $likesCount += $item->likes()->count();
-        }
-        return $likesCount;
-    }
-
-    public static function userPostsTotalLikes($user_id) {
-        return Post::likesInCollection(Post::where('user_id', $user_id)->get());
     }
 
     public function getAuthHasLikedAttribute(){

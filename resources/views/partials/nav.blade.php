@@ -41,7 +41,7 @@
                                 {{ __('Profile') }}
                             </a>
 
-                            <a class="dropdown-item" href="{{ route('user-posts') }}">
+                            <a class="dropdown-item" href="/users/{{ auth()->user()->id }}">
                                 {{ __('My posts') }}
                             </a>
 
